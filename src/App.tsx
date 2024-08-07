@@ -1,20 +1,24 @@
-import BoxCreateComment from './components/BoxCreateComment'
+// import BoxCreateComment from './components/BoxMainComment'
+import BoxReplyComment from './components/BoxCommentCreate'
 
 const App: React.FC = () => {
-  const addNewComment = () => {
-    console.log('hola')
-  }
+  // const addNewComment = () => {
+  //   console.log('hola')
+  // }
 
   return (
     <>
-      <div className='flex flex-col items-center justify-center min-h-screen'>
-        <button
+      <div className='flex min-h-screen flex-col items-center'>
+        {/* <button
           onClick={addNewComment}
-          // className='mb-4 p-2 bg-moderate-blue text-white rounded'
-        >
+          className='hove m-9 h-10 w-[40%] rounded-md bg-moderate-blue text-white hover:bg-light-grayish-blue'>
           Add new comment!
         </button>
         <BoxCreateComment />
+        <br />
+        <br />
+        <br /> */}
+        <BoxReplyComment />
       </div>
     </>
   )

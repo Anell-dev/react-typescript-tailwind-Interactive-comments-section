@@ -9,3 +9,17 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  @apply bg-light-gray font-rubik;
+}
+
+p {
+  font-size: 15px;
+}
+
+@layer components {
+  .input-textarea {
+    @apply rounded-md border-[1.5px] border-very-light-gray p-2 outline-none focus:border-light-grayish-blue;
+  }
+}
