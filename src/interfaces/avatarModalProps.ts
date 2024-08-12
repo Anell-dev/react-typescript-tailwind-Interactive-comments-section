@@ -1,5 +1,5 @@
 export interface AvatarModalProps {
   isOpen: boolean
-  onClose: () => void
+  onCloseModal: () => void
   onSelectAvatar: (src: string) => void
 }

@@ -1,4 +1,4 @@
-import { AvatarSelectorProps } from '../interfaces/selector'
+import { AvatarSelectorProps } from '../interfaces/avatarSelectorProps'
 
 const AvatarSelector: React.FC<AvatarSelectorProps> = ({
   selectedAvatar,

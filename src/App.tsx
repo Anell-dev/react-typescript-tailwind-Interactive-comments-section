@@ -1,26 +1,39 @@
-// import BoxCreateComment from './components/BoxMainComment'
-import BoxReplyComment from './components/BoxCommentCreate'
+import React, { useState } from 'react'
+import AvatarSelector from './components/AvatarSelector'
+import AvatarModal from './components/AvatarModal'
+import CommentInput from './components/CommentInput'
+import CommentList from './components/CommentList'
+import useComments from './hooks/useComments'
 
 const App: React.FC = () => {
-  // const addNewComment = () => {
-  //   console.log('hola')
-  // }
+  const [selectedAvatar, setSelectedAvatar] = useState<string>('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { comments, addComment, addReply } = useComments()
+
+  const handleSelectAvatar = (avatar: string) => {
+    setSelectedAvatar(avatar)
+    setIsModalOpen(false)
+  }
+
+  const handleModel = () => {
+    setIsModalOpen(!isModalOpen)
+  }
 
   return (
-    <>
-      <div className='flex min-h-screen flex-col items-center'>
-        {/* <button
-          onClick={addNewComment}
-          className='hove m-9 h-10 w-[40%] rounded-md bg-moderate-blue text-white hover:bg-light-grayish-blue'>
-          Add new comment!
-        </button>
-        <BoxCreateComment />
-        <br />
-        <br />
-        <br /> */}
-        <BoxReplyComment />
-      </div>
-    </>
+    <div className='container mx-auto p-4'>
+      <h1 className='mb-4 text-2xl font-semibold'>Comment Section</h1>
+      <AvatarSelector
+        selectedAvatar={selectedAvatar}
+        onOpenModal={handleModel}
+      />
+      <AvatarModal
+        isOpen={isModalOpen}
+        onCloseModal={handleModel}
+        onSelectAvatar={handleSelectAvatar}
+      />
+      <CommentInput onAddComment={addComment} avatar={selectedAvatar} />
+      <CommentList comments={comments} onAddReply={addReply} />
+    </div>
   )
 }
 
