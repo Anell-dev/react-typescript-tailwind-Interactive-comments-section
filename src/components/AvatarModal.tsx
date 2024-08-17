@@ -19,7 +19,9 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
               src={avatar.src}
               alt='avatar'
               className='h-12 w-12 cursor-pointer rounded-full border-2 border-gray-200 hover:border-gray-500'
-              onClick={() => onSelectAvatar(avatar.src)}
+              onClick={() => {
+                onSelectAvatar(avatar.src)
+              }}
             />
           ))}
         </div>

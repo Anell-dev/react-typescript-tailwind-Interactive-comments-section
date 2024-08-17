@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { Comment } from '../interfaces/comments'
 
@@ -13,7 +13,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
 }) => {
   const [form, setForm] = useState<Comment>({
     id: '',
-    avatar: avatar,
+    avatar: avatar || '',
     username: '',
     text: '',
     replies: []
@@ -30,41 +30,40 @@ const CommentInput: React.FC<CommentInputProps> = ({
   }
 
   const handleAddComment = () => {
-    if (form.username && form.text) {
-      onAddComment({
-        ...form,
-        id: uuidv4()
-      })
-      setForm({
-        id: '',
-        avatar: avatar,
-        username: '',
-        text: '',
-        replies: []
-      })
-    }
+    onAddComment({
+      ...form,
+      avatar: avatar,
+      id: uuidv4()
+    })
+    setForm({
+      id: '',
+      avatar: '',
+      username: '',
+      text: '',
+      replies: []
+    })
   }
 
   return (
-    <div className='mb-4'>
+    <div className='flex w-[100%] flex-col gap-3'>
       <input
         type='text'
         name='username'
         placeholder='Your username'
         value={form.username}
         onChange={handleChange}
-        className='mb-2 w-full rounded-lg border p-2'
+        className='input-textarea'
       />
       <textarea
         name='text'
         placeholder='Your comment'
         value={form.text}
         onChange={handleChange}
-        className='mb-2 w-full rounded-lg border p-2'
+        className='input-textarea resize-none'
       />
       <button
         onClick={handleAddComment}
-        className='rounded-lg bg-blue-500 px-4 py-2 text-white'>
+        className='rounded-lg bg-moderate-blue px-4 py-2 text-white hover:bg-light-grayish-blue'>
         Add Comment
       </button>
     </div>

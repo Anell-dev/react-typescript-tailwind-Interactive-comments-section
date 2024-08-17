@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import AvatarSelector from './components/AvatarSelector'
 import AvatarModal from './components/AvatarModal'
 import CommentInput from './components/CommentInput'
@@ -6,9 +6,9 @@ import CommentList from './components/CommentList'
 import useComments from './hooks/useComments'
 
 const App: React.FC = () => {
-  const [selectedAvatar, setSelectedAvatar] = useState<string>('')
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { comments, addComment, addReply } = useComments()
+  const { comments, addComment, addReply, selectedAvatar, setSelectedAvatar } =
+    useComments()
 
   const handleSelectAvatar = (avatar: string) => {
     setSelectedAvatar(avatar)
@@ -20,18 +20,19 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className='container mx-auto p-4'>
-      <h1 className='mb-4 text-2xl font-semibold'>Comment Section</h1>
-      <AvatarSelector
-        selectedAvatar={selectedAvatar}
-        onOpenModal={handleModel}
-      />
-      <AvatarModal
-        isOpen={isModalOpen}
-        onCloseModal={handleModel}
-        onSelectAvatar={handleSelectAvatar}
-      />
-      <CommentInput onAddComment={addComment} avatar={selectedAvatar} />
+    <div className='flex flex-col items-center justify-center gap-5'>
+      <div className='mt-3 flex w-[50%] gap-2 rounded-lg bg-white p-5'>
+        <AvatarSelector
+          selectedAvatar={selectedAvatar}
+          onOpenModal={handleModel}
+        />
+        <AvatarModal
+          isOpen={isModalOpen}
+          onCloseModal={handleModel}
+          onSelectAvatar={handleSelectAvatar}
+        />
+        <CommentInput onAddComment={addComment} avatar={selectedAvatar} />
+      </div>
       <CommentList comments={comments} onAddReply={addReply} />
     </div>
   )
