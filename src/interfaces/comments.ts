@@ -3,6 +3,7 @@ export interface Comment {
   avatar: string
   username: string
   text: string
+  score: number
   replies: Comment[]
 }
 
