@@ -20,6 +20,16 @@ p {
 
 @layer components {
   .input-textarea {
-    @apply rounded-md border-[1.5px] border-very-light-gray p-2 outline-none focus:border-light-grayish-blue;
+    @apply rounded-md border-[1.5px] border-very-light-gray bg-[length:10px_10px] bg-[position:10px_10px] bg-no-repeat p-2 outline-none focus:border-light-grayish-blue;
+  }
+
+  .input-placeholder-red::placeholder {
+    color: #ef444499;
+  }
+
+  .input-warning {
+    background-image: url('./assets/images/icon-warning.svg');
+    background-size: 20px;
+    padding-left: 35px;
   }
 }

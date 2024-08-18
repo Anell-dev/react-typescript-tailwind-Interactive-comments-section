@@ -1,55 +1,53 @@
-import React, { useState } from 'react'
-import { Comment } from '../interfaces/comments'
+import { useState } from 'react'
 import CommentItem from './CommentItem'
 import CommentInput from './CommentInput'
+import userRandom from '../assets/images/user.png'
+import { Comment } from '../interfaces/comments'
+import { CommentListProps } from '../interfaces/commentListProps'
 
-interface CommentListProps {
-  comments: Comment[]
-  onAddReply: (id: string, reply: Comment) => void
-  level?: number
-}
-
-const CommentList: React.FC<CommentListProps> = ({
-  comments,
-  onAddReply,
-  level = 0
-}) => {
+const CommentList: React.FC<CommentListProps> = ({ comments, onAddReply }) => {
   const [showReplyInput, setShowReplyInput] = useState<string | null>(null)
+  const [replyingTo, setReplyingTo] = useState<string | null>(null)
 
   const handleAddReply = (parentId: string) => (reply: Comment) => {
     onAddReply(parentId, reply)
     setShowReplyInput(null)
+    setReplyingTo(null)
   }
 
-  const toggleReplyInput = (commentId: string) => {
-    setShowReplyInput((prev) => (prev === commentId ? null : commentId))
+  const toggleReplyInput = (commentId: string, username: string) => {
+    if (showReplyInput === commentId) {
+      setShowReplyInput(null)
+      setReplyingTo(null)
+    } else {
+      setShowReplyInput(commentId)
+      setReplyingTo(username)
+    }
   }
 
   return (
-    <div
-      className={`flex w-[100%] flex-col ${level > 0 ? `pl-${level * 8}` : ''}`}>
+    <div className='flex w-[100%] flex-col'>
       {comments.map((comment) => (
         <div key={comment.id} className='relative flex flex-col items-center'>
           <CommentItem
             comment={comment}
-            toggleReplyInput={() => toggleReplyInput(comment.id)}
+            toggleReplyInput={() =>
+              toggleReplyInput(comment.id, comment.username)
+            }
           />
 
           {comment.replies.length > 0 && (
             <div className='ml-10 w-[95%]'>
-              <CommentList
-                comments={comment.replies}
-                onAddReply={onAddReply}
-                level={level + 1}
-              />
+              <CommentList comments={comment.replies} onAddReply={onAddReply} />
             </div>
           )}
 
           {showReplyInput === comment.id && (
-            <div className='w-[50%]'>
+            <div className='mb-2 w-[50%] rounded-lg bg-white p-5'>
               <CommentInput
                 onAddComment={handleAddReply(comment.id)}
-                avatar={comment.avatar}
+                avatar={userRandom}
+                prefillText={replyingTo ? `@${replyingTo} ` : ''}
               />
             </div>
           )}
