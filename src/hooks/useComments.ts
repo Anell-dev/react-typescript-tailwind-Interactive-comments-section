@@ -10,6 +10,24 @@ const useComments = () => {
     setComments([...comments, comment])
   }
 
+  const editComment = (id: string, updatedComment: Comment) => {
+    const updateCommentRecursively = (comments: Comment[]): Comment[] => {
+      return comments.map((comment) => {
+        if (comment.id === id) {
+          return { ...comment, ...updatedComment }
+        } else if (comment.replies.length > 0) {
+          return {
+            ...comment,
+            replies: updateCommentRecursively(comment.replies)
+          }
+        }
+        return comment
+      })
+    }
+
+    setComments(updateCommentRecursively(comments))
+  }
+
   useEffect(() => {
     console.log(comments)
   }, [comments])
@@ -29,7 +47,14 @@ const useComments = () => {
     setComments(addReplyRecursively(comments))
   }
 
-  return { comments, addComment, addReply, selectedAvatar, setSelectedAvatar }
+  return {
+    comments,
+    addComment,
+    editComment,
+    addReply,
+    selectedAvatar,
+    setSelectedAvatar
+  }
 }
 
 export default useComments

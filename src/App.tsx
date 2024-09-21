@@ -7,8 +7,14 @@ import useComments from './hooks/useComments'
 
 const App: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { comments, addComment, addReply, selectedAvatar, setSelectedAvatar } =
-    useComments()
+  const {
+    comments,
+    addComment,
+    editComment,
+    addReply,
+    selectedAvatar,
+    setSelectedAvatar
+  } = useComments()
 
   const handleSelectAvatar = (avatar: string) => {
     setSelectedAvatar(avatar)
@@ -31,9 +37,20 @@ const App: React.FC = () => {
           onCloseModal={handleModel}
           onSelectAvatar={handleSelectAvatar}
         />
-        <CommentInput onAddComment={addComment} avatar={selectedAvatar} />
+        <CommentInput
+          onAddComment={addComment}
+          avatar={selectedAvatar}
+          dataToEdit={null}
+          onEditComment={editComment}
+          isReply={true}
+        />
       </div>
-      <CommentList comments={comments} onAddReply={addReply} />
+
+      <CommentList
+        comments={comments}
+        onAddReply={addReply}
+        onEditComment={editComment}
+      />
     </div>
   )
 }

@@ -7,7 +7,9 @@ import userIcon from '../assets/images/user.png'
 const CommentInput: React.FC<CommentInputProps> = ({
   onAddComment,
   avatar,
-  prefillText = ''
+  prefillText = '',
+  dataToEdit,
+  isReply
 }) => {
   const [form, setForm] = useState<Comment>({
     id: '',
@@ -15,6 +17,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
     username: '',
     text: prefillText,
     score: 0,
+    createdAt: new Date().toISOString(),
     replies: []
   })
 
@@ -25,6 +28,12 @@ const CommentInput: React.FC<CommentInputProps> = ({
     }))
   }, [avatar])
 
+  useEffect(() => {
+    if (dataToEdit) {
+      setForm(dataToEdit)
+    }
+  }, [dataToEdit])
+
   const [errors, setErrors] = useState<{ username?: string; text?: string }>({})
 
   const handleChange = (
@@ -32,17 +41,16 @@ const CommentInput: React.FC<CommentInputProps> = ({
   ) => {
     const { name, value } = e.target
 
-    if (name === 'text' && value.startsWith(prefillText)) {
-      setForm({
-        ...form,
-        [name]: value
-      })
-    } else if (name !== 'text') {
-      setForm({
-        ...form,
-        [name]: value
-      })
+    if (name === 'text' && isReply && !dataToEdit) {
+      if (!value.startsWith(prefillText)) {
+        return
+      }
     }
+
+    setForm({
+      ...form,
+      [name]: value
+    })
 
     if (value) {
       setErrors({
@@ -72,16 +80,24 @@ const CommentInput: React.FC<CommentInputProps> = ({
 
   const handleAddComment = () => {
     if (validate()) {
-      onAddComment({
-        ...form,
-        id: uuidv4()
-      })
+      if (dataToEdit) {
+        onAddComment({
+          ...form
+        })
+      } else {
+        onAddComment({
+          ...form,
+          id: uuidv4() // Genera un nuevo ID
+        })
+      }
+      // Resetear el formulario después de agregar o editar un comentario
       setForm({
         id: '',
         avatar: avatar || userIcon,
         username: '',
         text: prefillText,
         score: 0,
+        createdAt: new Date().toISOString(),
         replies: []
       })
     }
@@ -107,7 +123,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
       <button
         onClick={handleAddComment}
         className='rounded-lg bg-moderate-blue px-4 py-2 text-white hover:bg-light-grayish-blue'>
-        Add Comment
+        {dataToEdit ? 'Edit Comment' : 'Add Comment'}
       </button>
     </div>
   )

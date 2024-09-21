@@ -5,12 +5,22 @@ import userRandom from '../assets/images/user.png'
 import { Comment } from '../interfaces/comments'
 import { CommentListProps } from '../interfaces/commentListProps'
 
-const CommentList: React.FC<CommentListProps> = ({ comments, onAddReply }) => {
+const CommentList: React.FC<CommentListProps> = ({
+  comments,
+  onAddReply,
+  onEditComment
+}) => {
   const [showReplyInput, setShowReplyInput] = useState<string | null>(null)
   const [replyingTo, setReplyingTo] = useState<string | null>(null)
+  const [dataToEdit, setDataToEdit] = useState<Comment | null>(null)
 
   const handleAddReply = (parentId: string) => (reply: Comment) => {
-    onAddReply(parentId, reply)
+    if (dataToEdit) {
+      onEditComment(dataToEdit.id, reply)
+      setDataToEdit(null) // Limpiamos los datos de edición
+    } else {
+      onAddReply(parentId, reply)
+    }
     setShowReplyInput(null)
     setReplyingTo(null)
   }
@@ -22,23 +32,40 @@ const CommentList: React.FC<CommentListProps> = ({ comments, onAddReply }) => {
     } else {
       setShowReplyInput(commentId)
       setReplyingTo(username)
+      setDataToEdit(null)
+    }
+  }
+
+  const toggleEditInput = (comment: Comment) => {
+    if (dataToEdit && dataToEdit.id === comment.id) {
+      setDataToEdit(null)
+      setShowReplyInput(null)
+    } else {
+      setDataToEdit(comment)
+      setShowReplyInput(comment.id)
+      setReplyingTo(comment.username)
     }
   }
 
   return (
-    <div className='flex w-[100%] flex-col'>
+    <>
       {comments.map((comment) => (
-        <div key={comment.id} className='relative flex flex-col items-center'>
+        <div key={comment.id} className='flex w-[100%] flex-col items-center'>
           <CommentItem
             comment={comment}
             toggleReplyInput={() =>
               toggleReplyInput(comment.id, comment.username)
             }
+            toggleEditInput={() => toggleEditInput(comment)}
           />
 
           {comment.replies.length > 0 && (
             <div className='ml-10 w-[95%]'>
-              <CommentList comments={comment.replies} onAddReply={onAddReply} />
+              <CommentList
+                comments={comment.replies}
+                onAddReply={onAddReply}
+                onEditComment={onEditComment}
+              />
             </div>
           )}
 
@@ -48,12 +75,15 @@ const CommentList: React.FC<CommentListProps> = ({ comments, onAddReply }) => {
                 onAddComment={handleAddReply(comment.id)}
                 avatar={userRandom}
                 prefillText={replyingTo ? `@${replyingTo} ` : ''}
+                dataToEdit={dataToEdit}
+                onEditComment={onEditComment}
+                isReply={!dataToEdit}
               />
             </div>
           )}
         </div>
       ))}
-    </div>
+    </>
   )
 }
 
