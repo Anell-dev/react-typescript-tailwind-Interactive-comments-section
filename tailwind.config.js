@@ -21,7 +21,6 @@ export default {
       },
       colors: {
         'moderate-blue': '#3a3d9f',
-        'soft-red': '#f5586c',
         'light-grayish-blue': '#9a9dd4',
         'pale-red': '#fdd4d1',
         'dark-blue': '#2e3a4e',
