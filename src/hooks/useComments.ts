@@ -5,10 +5,28 @@ const useComments = () => {
   const [comments, setComments] = useState<Comment[]>([])
   const [selectedAvatar, setSelectedAvatar] = useState<string>('')
 
+  // Recuperando los comentarios del localStorage al cargar
+  useEffect(() => {
+    const savedComments = localStorage.getItem('comments')
+    if (savedComments) {
+      setComments(JSON.parse(savedComments))
+    }
+  }, [])
+
   const addComment = (comment: Comment) => {
     setSelectedAvatar('')
     setComments([...comments, comment])
   }
+
+  /*
+    cada vez que mi array de comments cambie significa que se guardo, edito o elimino algo
+    asique guardamos los cambios en el localStorage
+  */
+  useEffect(() => {
+    if (comments.length > 0) {
+      localStorage.setItem('comments', JSON.stringify(comments))
+    }
+  }, [comments])
 
   const editComment = (id: string, updatedComment: Comment) => {
     const updateCommentRecursively = (comments: Comment[]): Comment[] => {
@@ -47,13 +65,27 @@ const useComments = () => {
     setComments(addReplyRecursively(comments))
   }
 
+  const deleteComment = (id: string) => {
+    const deleteCommentRecursively = (comments: Comment[]): Comment[] => {
+      return comments
+        .filter((comment) => comment.id !== id) // Filtra el comentario que se desea eliminar
+        .map((comment) => ({
+          ...comment,
+          replies: deleteCommentRecursively(comment.replies) // Aplica la función recursivamente a las respuestas
+        }))
+    }
+
+    setComments(deleteCommentRecursively(comments))
+  }
+
   return {
     comments,
     addComment,
     editComment,
     addReply,
     selectedAvatar,
-    setSelectedAvatar
+    setSelectedAvatar,
+    deleteComment
   }
 }
 
