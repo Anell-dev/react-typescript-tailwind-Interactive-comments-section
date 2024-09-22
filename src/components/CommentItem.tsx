@@ -5,7 +5,8 @@ import { CommentItemProps } from '../interfaces/commentItemProps'
 const CommentItem: React.FC<CommentItemProps> = ({
   comment,
   toggleReplyInput,
-  toggleEditInput
+  toggleEditInput,
+  onDeleteComment
 }) => {
   const [score, setScore] = useState(comment.score)
 
@@ -15,6 +16,10 @@ const CommentItem: React.FC<CommentItemProps> = ({
 
   const handleVoteDown = () => {
     setScore(score - 1)
+  }
+
+  const handleDeleteComment = () => {
+    onDeleteComment()
   }
 
   const timeAgo = moment(comment.createdAt).fromNow()
@@ -94,7 +99,9 @@ const CommentItem: React.FC<CommentItemProps> = ({
               Edit
             </button>
 
-            <button className='flex items-center gap-2 font-medium text-red-600 hover:text-opacity-60'>
+            <button
+              className='flex items-center gap-2 font-medium text-red-600 hover:text-opacity-60'
+              onClick={handleDeleteComment}>
               <svg
                 width='12'
                 height='14'

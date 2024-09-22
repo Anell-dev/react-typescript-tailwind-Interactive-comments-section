@@ -8,7 +8,8 @@ import { CommentListProps } from '../interfaces/commentListProps'
 const CommentList: React.FC<CommentListProps> = ({
   comments,
   onAddReply,
-  onEditComment
+  onEditComment,
+  onDeleteComment
 }) => {
   const [showReplyInput, setShowReplyInput] = useState<string | null>(null)
   const [replyingTo, setReplyingTo] = useState<string | null>(null)
@@ -23,6 +24,10 @@ const CommentList: React.FC<CommentListProps> = ({
     }
     setShowReplyInput(null)
     setReplyingTo(null)
+  }
+
+  const handleDeleteComment = (id: string) => {
+    onDeleteComment(id)
   }
 
   const toggleReplyInput = (commentId: string, username: string) => {
@@ -57,6 +62,7 @@ const CommentList: React.FC<CommentListProps> = ({
               toggleReplyInput(comment.id, comment.username)
             }
             toggleEditInput={() => toggleEditInput(comment)}
+            onDeleteComment={() => handleDeleteComment(comment.id)}
           />
 
           {comment.replies.length > 0 && (
@@ -65,6 +71,7 @@ const CommentList: React.FC<CommentListProps> = ({
                 comments={comment.replies}
                 onAddReply={onAddReply}
                 onEditComment={onEditComment}
+                onDeleteComment={onDeleteComment}
               />
             </div>
           )}

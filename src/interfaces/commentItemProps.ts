@@ -4,4 +4,5 @@ export interface CommentItemProps {
   comment: Comment
   toggleReplyInput: () => void
   toggleEditInput: () => void
+  onDeleteComment: () => void
 }

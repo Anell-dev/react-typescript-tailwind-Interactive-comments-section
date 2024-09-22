@@ -13,7 +13,8 @@ const App: React.FC = () => {
     editComment,
     addReply,
     selectedAvatar,
-    setSelectedAvatar
+    setSelectedAvatar,
+    deleteComment
   } = useComments()
 
   const handleSelectAvatar = (avatar: string) => {
@@ -50,6 +51,7 @@ const App: React.FC = () => {
         comments={comments}
         onAddReply={addReply}
         onEditComment={editComment}
+        onDeleteComment={deleteComment}
       />
     </div>
   )
