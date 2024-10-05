@@ -25,8 +25,8 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const timeAgo = moment(comment.createdAt).fromNow()
 
   return (
-    <div className='mb-3 flex min-h-[140px] w-[50%] animate-slideIn select-none gap-5 rounded-lg bg-white p-5 shadow-lg'>
-      <div className='flex w-8 flex-col items-center justify-center gap-2 rounded-md bg-very-light-gray font-medium'>
+    <div className='mb-3 flex min-h-[140px] animate-slideIn select-none gap-5 rounded-lg bg-white p-5 shadow-lg mobile:w-[80%] mobile:flex-col-reverse tablet:w-[70%] tablet:flex-row desktop:w-[50%]'>
+      <div className='flex flex-col items-center justify-center gap-2 rounded-md bg-very-light-gray font-medium mobile:flex mobile:h-[30px] mobile:w-[100%] mobile:flex-row-reverse tablet:h-[106px] tablet:w-8 tablet:flex-col'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'
@@ -61,7 +61,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
       </div>
 
       <div className='flex w-full flex-col gap-3 overflow-x-auto'>
-        <div className='flex justify-between'>
+        <div className='flex mobile:flex-col mobile:gap-4 tablet:flex-row tablet:justify-between'>
           <div className='flex items-center gap-3'>
             <img
               src={comment.avatar}
@@ -72,7 +72,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
             <p className='text-grayish-blue'>{timeAgo}</p>
           </div>
 
-          <div className='flex gap-10'>
+          <div className='flex gap-10 mobile:justify-between mobile:gap-0 tablet:gap-5'>
             <button
               className='flex items-center gap-2 font-medium text-moderate-blue hover:text-light-grayish-blue'
               onClick={toggleReplyInput}>
@@ -113,7 +113,9 @@ const CommentItem: React.FC<CommentItemProps> = ({
             </button>
           </div>
         </div>
-        <p className='break-all'>{comment.text}</p>
+        <p className='break-all mobile:text-center tablet:text-start'>
+          {comment.text}
+        </p>
       </div>
     </div>
   )

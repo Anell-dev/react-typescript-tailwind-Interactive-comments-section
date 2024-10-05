@@ -77,7 +77,7 @@ const CommentList: React.FC<CommentListProps> = ({
           )}
 
           {showReplyInput === comment.id && (
-            <div className='mb-2 w-[50%] rounded-lg bg-white p-5'>
+            <div className='mb-2 rounded-lg bg-white p-5 mobile:w-[80%] tablet:w-[70%] desktop:w-[50%]'>
               <CommentInput
                 onAddComment={handleAddReply(comment.id)}
                 avatar={userRandom}

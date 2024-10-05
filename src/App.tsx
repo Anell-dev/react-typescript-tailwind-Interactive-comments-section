@@ -28,7 +28,7 @@ const App: React.FC = () => {
 
   return (
     <div className='flex flex-col items-center justify-center gap-5'>
-      <div className='mt-3 flex w-[50%] gap-2 rounded-lg bg-white p-5'>
+      <div className='mt-3 flex w-[60%] gap-2 rounded-lg bg-white p-5 mobile:w-[80%] tablet:w-[70%] desktop:w-[50%]'>
         <AvatarSelector
           selectedAvatar={selectedAvatar}
           onOpenModal={handleModel}

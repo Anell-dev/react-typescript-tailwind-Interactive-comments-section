@@ -16,8 +16,9 @@ export default {
         slideIn: 'slideIn 0.3s ease-out forwards',
       },
       screens: {
-        mobile: '375px',
-        desktop: '1440px'
+        desktop: '1210px',
+        tablet: '800px',
+        mobile: '350px',
       },
       colors: {
         'moderate-blue': '#3a3d9f',
